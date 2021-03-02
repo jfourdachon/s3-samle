@@ -1,18 +1,16 @@
 const aws = require('aws-sdk');
 
-exports.getSignedUrlPut = (filePath, fileType, bucket) => {
-  aws.config.update({
+aws.config.update({
     accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_S3_SECRET_KEY,
     region: process.env.AWS_S3_REGION,
   });
 
+
+exports.getSignedUrlPut = (filePath, fileType, isPrivateBucket) => {
+      
   try {
-    if (!bucket) {
-      bucket = process.env.AWS_S3_BUCKET_PUBLIC;
-    } else {
-      bucket = process.env.AWS_S3_BUCKET_PRIVATE;
-    }
+    const bucket = !isPrivateBucket ? process.env.AWS_S3_BUCKET_PUBLIC :process.env.AWS_S3_BUCKET_PRIVATE;
     const s3 = new aws.S3();
     const s3Params = {
       Bucket: bucket,
@@ -25,6 +23,5 @@ exports.getSignedUrlPut = (filePath, fileType, bucket) => {
     return signedUrl;
   } catch (err) {
     console.log(err);
-    // return ApiService.returnFormat(false, 'getSignedUrlPut', 'other-error', err.message);
   }
 };

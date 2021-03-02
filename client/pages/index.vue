@@ -38,7 +38,7 @@ export default {
                         'Content-Type': this.file.type
                     }
                 });
-                console.log('ca passe')
+                return true
             } catch (err) {
                 return this.$nuxt.error({ statusCode: 500, message: err.message });
             }

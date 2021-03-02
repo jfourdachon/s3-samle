@@ -1,14 +1,11 @@
-const { getSignedUrlPut } = require("../service/s3");
+const S3Service = require('../services/s3.service')
 
 
 exports.getSignedUrl = (req, res) => {
     const {fileName, fileType, bucket} = req.query
-    console.log(typeof bucket)
-    console.log(bucket)
-    const publicBucket = (bucket !== 'false')
+    const isPrivateBucket = (bucket !== 'false')
 
-    const data = getSignedUrlPut(fileName, fileType, publicBucket)
-    console.log({data})
+    const data = S3Service.getSignedUrlPut(fileName, fileType, isPrivateBucket)
     return res.status(200).json({
         status: true,
         data,
