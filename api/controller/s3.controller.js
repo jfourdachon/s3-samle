@@ -12,3 +12,14 @@ exports.getSignedUrl = (req, res) => {
         message: 'Successfully fetched signedUrl',
       });
 }
+
+
+exports.getFileContent = async (req, res) => {
+    try {
+        const file = await S3Service.getFileContent(req.query.key);
+        return res.status(200).json({ status: 200, file: file, message: 'Sucess' });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ status: 400, message: err.message });
+    }
+}
